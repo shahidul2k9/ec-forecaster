@@ -13,6 +13,8 @@ from keras.layers import RepeatVector
 from keras.layers import TimeDistributed
 from keras.layers.convolutional import Conv1D
 from keras.layers.convolutional import MaxPooling1D
+import numpy as np
+
 
 # split a univariate dataset into train/test sets
 def split_dataset(data):
@@ -124,6 +126,17 @@ def evaluate_model(train, test, n_input):
 		history.append(test[i, :])
 	# evaluate predictions days for each week
 	predictions = array(predictions)
+	actual = test[:, :, 0]
+	actual = np.reshape(actual, actual.size)
+	predicted = np.reshape(predictions, predictions.size)
+	print("Actual")
+	print(actual)
+	print("Predicted")
+	print(predicted)
+	pyplot.plot(actual, marker='o', color ='b', label='actual')
+	pyplot.plot(predicted, marker='o', color ='r', label='prediction')
+	pyplot.show()
+
 	score, scores = evaluate_forecasts(test[:, :, 0], predictions)
 	return score, scores
 
@@ -139,5 +152,5 @@ score, scores = evaluate_model(train, test, n_input)
 summarize_scores('lstm', score, scores)
 # plot scores
 days = ['sun', 'mon', 'tue', 'wed', 'thr', 'fri', 'sat']
-pyplot.plot(days, scores, marker='o', label='lstm')
-pyplot.show()
+#pyplot.plot(days, scores, marker='o', label='lstm')
+#pyplot.show()
