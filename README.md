@@ -4,6 +4,10 @@ https://machinelearningmastery.com/how-to-develop-lstm-models-for-multi-step-tim
 https://machinelearningmastery.com/how-to-develop-lstm-models-for-time-series-forecasting/?fbclid=IwAR28YiZJaYBhq0rMJrHJS_KRdv_Mi19egSR0u-lEmOF-f-cXAMkuAe0ITeA
 https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/
 
-1827 ==> 1288 + 539 ==> 184*7 + 77*7 ==> 261*7
+
+1826 = 1288 + 538
+= 5 + 1288+ 525 + 
+= train[5-1293) + test[1293-1363) +  rest unused data
+= train-infile[7-1295) + test-data-infile[1295-1365) + rest unused data
 
 

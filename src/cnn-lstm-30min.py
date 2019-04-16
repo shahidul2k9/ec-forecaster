@@ -19,10 +19,13 @@ import numpy as np
 # split a univariate dataset into train/test sets
 def split_dataset(data):
 	# split into standard weeks
-	train, test = data[5:1293], data[1293:1818]
+	train, test = data[0:61824], data[61824:87024]
 	# restructure into windows of weekly data
-	train = array(split(train, len(train)/7))
-	test = array(split(test, len(test)/7))
+	print(len(train)/48)
+	print(len(test)/48)
+
+	train = array(split(train, len(train)/48))
+	test = array(split(test, len(test)/48))
 	return train, test
 
 # evaluate one or more weekly forecasts against expected values
@@ -142,11 +145,11 @@ def evaluate_model(train, test, n_input):
 
 # load the new file
 #dataset = read_csv('../resources/household_power_consumption_days.csv', header=0, infer_datetime_format=True, parse_dates=['datetime'], index_col=['datetime'])
-dataset = read_csv('../resources/electricity_consumption_daily.csv', header=0, infer_datetime_format=True, parse_dates=['datetime'], index_col=['datetime'])
+dataset = read_csv('../resources/electricity_consumption_30min.csv', header=0, infer_datetime_format=True, parse_dates=['datetime'], index_col=['datetime'])
 # split into train and test
 train, test = split_dataset(dataset.values)
 # evaluate model and get scores
-n_input = 14
+n_input = 96
 score, scores = evaluate_model(train, test, n_input)
 # summarize scores
 summarize_scores('lstm', score, scores)

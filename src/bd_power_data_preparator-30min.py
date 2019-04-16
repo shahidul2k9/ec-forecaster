@@ -33,12 +33,3 @@ fill_missing(thirty_minute_data.values)
 print(thirty_minute_data.shape)
 print(thirty_minute_data.head())
 thirty_minute_data.to_csv('../resources/electricity_consumption_30min.csv')
-
-
-# resample minute data to total for each day
-dataset = read_csv('../resources/electricity_consumption_30min.csv', header=0, infer_datetime_format=True, parse_dates=['datetime'], index_col=['datetime'])
-daily_minute_groups = dataset.resample('D')
-daily_minute_data = daily_minute_groups.mean()
-print(daily_minute_data.shape)
-print(daily_minute_data.head())
-daily_minute_data.to_csv('../resources/electricity_consumption_daily.csv')
