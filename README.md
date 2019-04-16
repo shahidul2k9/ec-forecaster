@@ -11,3 +11,4 @@ https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in
 = train-infile[7-1295) + test-data-infile[1295-1365) + rest unused data
 
 
+ git pull origin dev
