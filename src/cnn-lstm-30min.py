@@ -19,7 +19,9 @@ import numpy as np
 # split a univariate dataset into train/test sets
 def split_dataset(data):
 	# split into standard weeks
-	train, test = data[0:61824], data[61824:87024]
+	#train, test = data[0:61824], data[61824:87024]
+	train, test = data[0:96], data[96:144]
+
 	# restructure into windows of weekly data
 	print(len(train)/48)
 	print(len(test)/48)

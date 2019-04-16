@@ -13,11 +13,13 @@ from keras.layers import RepeatVector
 from keras.layers import TimeDistributed
 from keras.layers.convolutional import Conv1D
 from keras.layers.convolutional import MaxPooling1D
+import numpy as np
+
 
 # split a univariate dataset into train/test sets
 def split_dataset(data):
 	# split into standard weeks
-	train, test = data[1:-328], data[-328:-6]
+	train, test = data[5:1293], data[1293:1818]
 	# restructure into windows of weekly data
 	train = array(split(train, len(train)/7))
 	test = array(split(test, len(test)/7))
@@ -124,11 +126,23 @@ def evaluate_model(train, test, n_input):
 		history.append(test[i, :])
 	# evaluate predictions days for each week
 	predictions = array(predictions)
+	actual = test[:, :, 0]
+	actual = np.reshape(actual, actual.size)
+	predicted = np.reshape(predictions, predictions.size)
+	print("Actual")
+	print(actual)
+	print("Predicted")
+	print(predicted)
+	pyplot.plot(actual, marker='o', color ='b', label='actual')
+	pyplot.plot(predicted, marker='o', color ='r', label='prediction')
+	pyplot.show()
+
 	score, scores = evaluate_forecasts(test[:, :, 0], predictions)
 	return score, scores
 
 # load the new file
-dataset = read_csv('../resources/household_power_consumption_days.csv', header=0, infer_datetime_format=True, parse_dates=['datetime'], index_col=['datetime'])
+#dataset = read_csv('../resources/household_power_consumption_days.csv', header=0, infer_datetime_format=True, parse_dates=['datetime'], index_col=['datetime'])
+dataset = read_csv('../resources/electricity_consumption_daily.csv', header=0, infer_datetime_format=True, parse_dates=['datetime'], index_col=['datetime'])
 # split into train and test
 train, test = split_dataset(dataset.values)
 # evaluate model and get scores
@@ -138,5 +152,5 @@ score, scores = evaluate_model(train, test, n_input)
 summarize_scores('lstm', score, scores)
 # plot scores
 days = ['sun', 'mon', 'tue', 'wed', 'thr', 'fri', 'sat']
-pyplot.plot(days, scores, marker='o', label='lstm')
-pyplot.show()
+#pyplot.plot(days, scores, marker='o', label='lstm')
+#pyplot.show()
