@@ -21,7 +21,7 @@ def split_dataset(data):
 	# split into standard weeks
 	train_samples_days = 4*365*48
 	test_samples_days = 300*48
-	train, test = data[0: test_samples_days], data[test_samples_days: test_samples_days + test_samples_days]
+	train, test = data[0: train_samples_days], data[train_samples_days: train_samples_days + test_samples_days]
 
 	# restructure into windows of weekly data
 	print(len(train)/48)
