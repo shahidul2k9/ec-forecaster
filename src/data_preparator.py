@@ -5,13 +5,13 @@ from pandas import to_numeric
 
 # fill missing values with a value at the same time one day ago
 def fill_missing(values):
-	#one_day = 2 * 24
-	one_day = 1
+	previous_day_ref_distance = 1
 	for row in range(values.shape[0]):
 		for col in range(1):
 			v = values[row, col]
 			if isnan(v) or v <= 1:
-				values[row, col] = values[row - one_day, col]
+				values[row, col] = values[row - previous_day_ref_distance, col]
+
 
 # load all data
 dataset = read_csv('../resources/electricity_consumption_orginal.csv', sep=',', header=0, low_memory=False, infer_datetime_format=True, parse_dates={'datetime':[0,1]}, index_col=['datetime'])

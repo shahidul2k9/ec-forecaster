@@ -19,8 +19,9 @@ import numpy as np
 # split a univariate dataset into train/test sets
 def split_dataset(data):
 	# split into standard weeks
-	#train, test = data[0:61824], data[61824:87024]
-	train, test = data[0:96], data[96:144]
+	train_samples_days = 4*365*48
+	test_samples_days = 300*48
+	train, test = data[0: test_samples_days], data[test_samples_days: test_samples_days + test_samples_days]
 
 	# restructure into windows of weekly data
 	print(len(train)/48)
@@ -55,7 +56,7 @@ def summarize_scores(name, score, scores):
 	print('%s: [%.3f] %s' % (name, score, s_scores))
 
 # convert history into inputs and outputs
-def to_supervised(train, n_input, n_out=7):
+def to_supervised(train, n_input, n_out=48):
 	# flatten data
 	data = train.reshape((train.shape[0]*train.shape[1], train.shape[2]))
 	X, y = list(), list()
@@ -80,7 +81,7 @@ def build_model(train, n_input):
 	# prepare data
 	train_x, train_y = to_supervised(train, n_input)
 	# define parameters
-	verbose, epochs, batch_size = 0, 20, 16
+	verbose, epochs, batch_size = 0, 5, 16
 	n_timesteps, n_features, n_outputs = train_x.shape[1], train_x.shape[2], train_y.shape[1]
 	# reshape output into [samples, timesteps, features]
 	train_y = train_y.reshape((train_y.shape[0], train_y.shape[1], 1))
