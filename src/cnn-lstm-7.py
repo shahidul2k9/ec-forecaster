@@ -19,16 +19,15 @@ import numpy as np
 # split a univariate dataset into train/test sets
 def split_dataset(data):
 	# split into standard weeks
-	train_samples_days = 1*365*48
-	test_samples_days = 300*48
-	train, test = data[0: train_samples_days], data[train_samples_days: train_samples_days + test_samples_days]
+	train_samples_points = int((1*365*48)/7)*7
+	test_samples_points = int((1*100*48)/7)*7
+	train, test = data[0: train_samples_points], data[train_samples_points: train_samples_points + test_samples_points]
 
-	# restructure into windows of weekly data
-	print(len(train)/48)
-	print(len(test)/48)
+	print('train point  size : %d', train_samples_points)
+	print('test points size : %d', test_samples_points)
 
-	train = array(split(train, len(train)/48))
-	test = array(split(test, len(test)/48))
+	train = array(split(train, len(train)/7))
+	test = array(split(test, len(test)/7))
 	return train, test
 
 # evaluate one or more weekly forecasts against expected values
@@ -56,7 +55,7 @@ def summarize_scores(name, score, scores):
 	print('%s: [%.3f] %s' % (name, score, s_scores))
 
 # convert history into inputs and outputs
-def to_supervised(train, n_input, n_out=48):
+def to_supervised(train, n_input, n_out=7):
 	# flatten data
 	data = train.reshape((train.shape[0]*train.shape[1], train.shape[2]))
 	X, y = list(), list()
@@ -81,7 +80,7 @@ def build_model(train, n_input):
 	# prepare data
 	train_x, train_y = to_supervised(train, n_input)
 	# define parameters
-	verbose, epochs, batch_size = 0, 5, 16
+	verbose, epochs, batch_size = 0, 20, 16
 	n_timesteps, n_features, n_outputs = train_x.shape[1], train_x.shape[2], train_y.shape[1]
 	# reshape output into [samples, timesteps, features]
 	train_y = train_y.reshape((train_y.shape[0], train_y.shape[1], 1))
@@ -147,16 +146,16 @@ def evaluate_model(train, test, n_input):
 	return score, scores
 
 # load the new file
-#dataset = read_csv('../resources/household_power_consumption_days.csv', header=0, infer_datetime_format=True, parse_dates=['datetime'], index_col=['datetime'])
 dataset = read_csv('../resources/electricity_consumption_30min.csv', header=0, infer_datetime_format=True, parse_dates=['datetime'], index_col=['datetime'])
+#dataset = read_csv('../resources/electricity_consumption_daily.csv', header=0, infer_datetime_format=True, parse_dates=['datetime'], index_col=['datetime'])
 # split into train and test
 train, test = split_dataset(dataset.values)
 # evaluate model and get scores
-n_input = 96
+n_input = 14
 score, scores = evaluate_model(train, test, n_input)
 # summarize scores
 summarize_scores('lstm', score, scores)
 # plot scores
 days = ['sun', 'mon', 'tue', 'wed', 'thr', 'fri', 'sat']
-#pyplot.plot(days, scores, marker='o', label='lstm')
-#pyplot.show()
+pyplot.plot(days, scores, marker='o', label='lstm')
+pyplot.show()
