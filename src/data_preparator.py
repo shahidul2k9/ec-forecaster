@@ -8,8 +8,13 @@ def fill_missing(values):
 	previous_day_ref_distance = 1
 	for row in range(values.shape[0]):
 		for col in range(1):
+			p_v = values[row-1,col]
 			v = values[row, col]
-			if isnan(v) or v <= 1:
+			if(p_v < 1):
+				p_v = 1
+
+			is_too_less = (v-p_v)/p_v * 100 < -50
+			if isnan(v) or is_too_less:
 				values[row, col] = values[row - previous_day_ref_distance, col]
 
 

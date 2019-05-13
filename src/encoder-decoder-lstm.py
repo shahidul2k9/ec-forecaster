@@ -1,4 +1,4 @@
-# univariate multi-step encoder-decoder cnn-lstm
+# univariate multi-step encoder-decoder lstm
 from math import sqrt
 from numpy import split
 from numpy import array
@@ -11,13 +11,8 @@ from keras.layers import Flatten
 from keras.layers import LSTM
 from keras.layers import RepeatVector
 from keras.layers import TimeDistributed
-from keras.layers.convolutional import Conv1D
-from keras.layers.convolutional import MaxPooling1D
 import numpy as np
 from  config import split_dataset, evaluate_forecasts, summarize_scores, to_supervised,forecast
-
-
-
 
 
 
@@ -26,16 +21,13 @@ def build_model(train, n_input):
 	# prepare data
 	train_x, train_y = to_supervised(train, n_input)
 	# define parameters
-	verbose, epochs, batch_size = 0, 19, 16
+	verbose, epochs, batch_size = 0, 20, 16
 	n_timesteps, n_features, n_outputs = train_x.shape[1], train_x.shape[2], train_y.shape[1]
 	# reshape output into [samples, timesteps, features]
 	train_y = train_y.reshape((train_y.shape[0], train_y.shape[1], 1))
 	# define model
 	model = Sequential()
-	model.add(Conv1D(filters=64, kernel_size=3, activation='relu', input_shape=(n_timesteps,n_features)))
-	model.add(Conv1D(filters=64, kernel_size=3, activation='relu'))
-	model.add(MaxPooling1D(pool_size=2))
-	model.add(Flatten())
+	model.add(LSTM(200, activation='relu', input_shape=(n_timesteps, n_features)))
 	model.add(RepeatVector(n_outputs))
 	model.add(LSTM(200, activation='relu', return_sequences=True))
 	model.add(TimeDistributed(Dense(100, activation='relu')))
@@ -46,6 +38,7 @@ def build_model(train, n_input):
 	return model
 
 
+# evaluate a single model
 # evaluate a single model
 def evaluate_model(train, test, n_input):
 	# fit model
@@ -72,9 +65,11 @@ def evaluate_model(train, test, n_input):
 	print(predicted)
 	pyplot.plot(actual, marker='o', color ='b', label='actual')
 	pyplot.plot(predicted, marker='o', color ='r', label='prediction')
-	pyplot.show()
 
 	score, scores = evaluate_forecasts(test[:, :, 0], predictions)
+	#pyplot.plot(scores, marker='o', color ='y', label='rmse')
+	pyplot.show()
+
 	return score, scores
 
 # load the new file
@@ -87,6 +82,6 @@ n_input = 14
 score, scores = evaluate_model(train, test, n_input)
 # summarize scores
 summarize_scores('lstm', score, scores)
-# plot scores
+
 pyplot.plot(scores, marker='o', color ='y', label='RMSE')
 pyplot.show()
