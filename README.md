@@ -4,6 +4,8 @@ https://machinelearningmastery.com/how-to-develop-lstm-models-for-multi-step-tim
 https://machinelearningmastery.com/how-to-develop-lstm-models-for-time-series-forecasting/?fbclid=IwAR28YiZJaYBhq0rMJrHJS_KRdv_Mi19egSR0u-lEmOF-f-cXAMkuAe0ITeA
 https://www.shanelynn.ie/using-pandas-dataframe-creating-editing-viewing-data-in-python/
 
+Serialize and Deserialize trained MODEL
+https://machinelearningmastery.com/save-load-machine-learning-models-python-scikit-learn/
 
 1826 = 1288 + 538
 = 5 + 1288+ 525 + 
