@@ -12,7 +12,7 @@ from keras.layers import LSTM
 from keras.layers import RepeatVector
 from keras.layers import TimeDistributed
 import numpy as np
-from  config import split_dataset, evaluate_forecasts, summarize_scores, to_supervised,forecast
+from config import split_dataset, evaluate_forecasts, summarize_scores, to_supervised,forecast
 
 
 

@@ -5,9 +5,9 @@ from numpy import array
 # split a univariate dataset into train/test sets
 def split_dataset(data):
 	# split into standard weeks
-	train_samples_points = int((4*365*48)/7)*7
-	#train_samples_points = int((10*48)/7)*7
-	test_samples_points = int((1*10*48)/7)*7
+	train_samples_points = int((70126)/7)*7
+	#train_samples_points = int((4*365*48)/7)*7
+	test_samples_points = int((7*48)/7)*7
 	train, test = data[0: train_samples_points], data[train_samples_points: train_samples_points + test_samples_points]
 
 	print('train point  size : %d', train_samples_points)

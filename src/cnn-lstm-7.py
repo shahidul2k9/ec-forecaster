@@ -16,6 +16,8 @@ from keras.layers.convolutional import MaxPooling1D
 import numpy as np
 from  config import split_dataset, evaluate_forecasts, summarize_scores, to_supervised,forecast
 
+from sklearn.externals import joblib
+
 
 
 
@@ -75,7 +77,7 @@ def evaluate_model(train, test, n_input):
 	pyplot.show()
 
 	score, scores = evaluate_forecasts(test[:, :, 0], predictions)
-	return score, scores
+	return model, score, scores
 
 # load the new file
 dataset = read_csv('../resources/electricity_consumption_30min.csv', header=0, infer_datetime_format=True, parse_dates=['datetime'], index_col=['datetime'])
@@ -84,9 +86,11 @@ dataset = read_csv('../resources/electricity_consumption_30min.csv', header=0, i
 train, test = split_dataset(dataset.values)
 # evaluate model and get scores
 n_input = 14
-score, scores = evaluate_model(train, test, n_input)
+model, score, scores = evaluate_model(train, test, n_input)
 # summarize scores
 summarize_scores('lstm', score, scores)
 # plot scores
 pyplot.plot(scores, marker='o', color ='y', label='RMSE')
 pyplot.show()
+
+joblib.dump(model,"../resources/cnn-model.sav")
